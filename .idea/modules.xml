@@ -4,6 +4,9 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AppRouter.iml" filepath="$PROJECT_DIR$/AppRouter.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/route_annotation/route_annotation.iml" filepath="$PROJECT_DIR$/route_annotation/route_annotation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/route_annotation_compiler/route_annotation_compiler.iml" filepath="$PROJECT_DIR$/route_annotation_compiler/route_annotation_compiler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/router/router.iml" filepath="$PROJECT_DIR$/router/router.iml" />
     </modules>
   </component>
 </project>
