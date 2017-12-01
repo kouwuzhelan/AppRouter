@@ -19,5 +19,5 @@ public @interface ActivityRouter {
 
     String schema() default "bitauto";
 
-    String[] interceptors() default "";
+    String[] interceptors() default {};
 }

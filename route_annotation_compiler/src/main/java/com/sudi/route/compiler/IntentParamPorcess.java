@@ -39,7 +39,7 @@ import javax.lang.model.type.TypeMirror;
  */
 
 @AutoService(Processor.class)
-@SupportedAnnotationTypes({"com.sudi.annotation.IntentParam"})
+@SupportedAnnotationTypes({"com.sudi.route.annotation.IntentParam"})
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
 public class IntentParamPorcess extends AbstractProcessor {
 
@@ -126,7 +126,7 @@ public class IntentParamPorcess extends AbstractProcessor {
             for (Element param : params) {
                 IntentParam injectParam = param.getAnnotation(IntentParam.class);
                 String fieldName = param.getSimpleName().toString();
-                String key = isEmpty(injectParam.key()) ? fieldName : injectParam.key();
+                String key = isEmpty(injectParam.value()) ? fieldName : injectParam.value();
 
                 StringBuilder statement = new StringBuilder();
                 if (param.getModifiers().contains(Modifier.PRIVATE)) {

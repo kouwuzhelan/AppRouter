@@ -34,7 +34,7 @@ import javax.lang.model.element.TypeElement;
  */
 
 @AutoService(Processor.class)
-@SupportedAnnotationTypes({"com.sudi.annotation.ActivityRouter"})
+@SupportedAnnotationTypes({"com.sudi.route.annotation.ActivityRouter"})
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
 public class RoutePorcess extends AbstractProcessor {
     private String mModuleName;

@@ -32,7 +32,7 @@ import javax.lang.model.element.TypeElement;
  * Email：sudi@yiche.com
  */
 @AutoService(Processor.class)
-@SupportedAnnotationTypes({"com.sudi.annotation.Interceptor"})
+@SupportedAnnotationTypes({"com.sudi.route.annotation.Interceptor"})
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
 public class InterceptorProcess extends AbstractProcessor {
     private String mModuleName;
