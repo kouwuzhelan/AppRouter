@@ -69,11 +69,10 @@ public class RoutePorcess extends AbstractProcessor {
     }
 
     /**
-     * Verify the annotated class. Must be a subtype of Activity or Fragment.
+     * Verify the annotated class. Must be a subtype of Activity.
      */
     private boolean validateElement(Element typeElement) {
-        if (!isSubtype(typeElement, Constans.ACTIVITY_FULL_NAME) && !isSubtype(typeElement, Constans.FRAGMENT_V4_FULL_NAME)
-                && !isSubtype(typeElement, Constans.FRAGMENT_FULL_NAME)) {
+        if (!isSubtype(typeElement, Constans.ACTIVITY_FULL_NAME)) {
             return false;
         }
         Set<Modifier> modifiers = typeElement.getModifiers();

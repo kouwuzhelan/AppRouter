@@ -103,11 +103,9 @@ public class IntentParamPorcess extends AbstractProcessor {
             boolean isActivity;
             if (isSubtype(parent, Constans.ACTIVITY_FULL_NAME)) {
                 isActivity = true;
-            } else if (isSubtype(parent, Constans.FRAGMENT_V4_FULL_NAME) || isSubtype(parent, Constans.FRAGMENT_FULL_NAME)) {
-                isActivity = false;
             } else {
                 throw new IllegalAccessException(
-                        String.format("The target class %s must be Activity or Fragment.", simpleName));
+                        String.format("The target class %s must be Activity.", simpleName));
             }
 
             // @Override
@@ -122,9 +120,6 @@ public class IntentParamPorcess extends AbstractProcessor {
                     ClassName.get(parent), TARGET, ClassName.get(parent), OBJ);
             if (isActivity) { // Bundle extras = target.getIntent().getExtras();
                 injectMethodBuilder.addStatement("$T $L = $L.getIntent().getExtras()",
-                        ClassName.get("android.os", "Bundle"), EXTRAS, TARGET);
-            } else { // Bundle extras = target.getArguments();
-                injectMethodBuilder.addStatement("$T $L = $L.getArguments()",
                         ClassName.get("android.os", "Bundle"), EXTRAS, TARGET);
             }
 
