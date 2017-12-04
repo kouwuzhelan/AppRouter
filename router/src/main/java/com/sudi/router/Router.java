@@ -36,22 +36,22 @@ public class Router {
         return _Router.getInstance().build(uri);
     }
 
-    /**
-     * Use {@link #handleRouteTable(RouteTable)} instead.
-     * <p>
-     * This method will be <strong>removed</strong> in a future release.
-     */
-    @Deprecated
-    public static void addRouteTable(RouteTable routeTable) {
-        handleRouteTable(routeTable);
-    }
+//    /**
+//     * Use {@link #handleRouteTable(RoutePathTable)} instead.
+//     * <p>
+//     * This method will be <strong>removed</strong> in a future release.
+//     */
+//    @Deprecated
+//    public static void addRouteTable(RoutePathTable routeTable) {
+//        handleRouteTable(routeTable);
+//    }
 
-    /**
-     * Custom route table.
-     */
-    public static void handleRouteTable(RouteTable routeTable) {
-        _Router.getInstance().handleRouteTable(routeTable);
-    }
+//    /**
+//     * Custom route table.
+//     */
+//    public static void handleRouteTable(RoutePathTable routeTable) {
+//        _Router.getInstance().handleRouteTable(routeTable);
+//    }
 
     /**
      * Custom interceptor table.

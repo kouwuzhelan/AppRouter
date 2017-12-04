@@ -39,6 +39,8 @@ import javax.lang.model.element.TypeElement;
 public class RoutePorcess extends AbstractProcessor {
     private String mModuleName;
 
+    private final static String SCHEMA_FORMATER = "%s://%s/%s";
+
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
         super.init(processingEnv);
@@ -60,7 +62,8 @@ public class RoutePorcess extends AbstractProcessor {
         }
         if (mModuleName != null) {
             String validModuleName = mModuleName.replace(".", "_").replace("-", "_");
-            generateRouteTable(validModuleName, typeElements);
+            generateRoutePathTable(validModuleName, typeElements);
+            generateRouteSchemaTable(validModuleName, typeElements);
             generateTargetInterceptors(validModuleName, typeElements);
         } else {
             throw new RuntimeException(String.format("No option `%s` passed to Route annotation processor.", Constans.OPTION_MODULE_NAME));
@@ -89,9 +92,9 @@ public class RoutePorcess extends AbstractProcessor {
     }
 
     /**
-     * RouteTable.
+     * RoutePathTable.
      */
-    private void generateRouteTable(String moduleName, Set<TypeElement> elements) {
+    private void generateRoutePathTable(String moduleName, Set<TypeElement> elements) {
         // Map<String, Class<?>> map
         ParameterizedTypeName mapTypeName = ParameterizedTypeName.get(ClassName.get(Map.class),
                 ClassName.get(String.class), ParameterizedTypeName.get(ClassName.get(Class.class),
@@ -106,9 +109,42 @@ public class RoutePorcess extends AbstractProcessor {
             ActivityRouter route = element.getAnnotation(ActivityRouter.class);
             methodHandle.addStatement("map.put($S, $T.class)", route.path(), ClassName.get(element));
         }
+        TypeElement interfaceType = processingEnv.getElementUtils().getTypeElement(Constans.ROUTE_PATH_TABLE_FULL_NAME);
+        TypeSpec type = TypeSpec.classBuilder(capitalize(moduleName) + Constans.ROUTE_PATH_TABLE)
+                .addSuperinterface(ClassName.get(interfaceType))
+                .addModifiers(Modifier.PUBLIC)
+                .addMethod(methodHandle.build())
+                .addJavadoc(Constans.CLASS_JAVA_DOC)
+                .build();
+        try {
+            JavaFile.builder(Constans.PACKAGE_NAME, type).build().writeTo(processingEnv.getFiler());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-        TypeElement interfaceType = processingEnv.getElementUtils().getTypeElement(Constans.ROUTE_TABLE_FULL_NAME);
-        TypeSpec type = TypeSpec.classBuilder(capitalize(moduleName) + Constans.ROUTE_TABLE)
+    /**
+     * RouteSchemaTable.
+     */
+    private void generateRouteSchemaTable(String moduleName, Set<TypeElement> elements) {
+        // Map<String, Class<?>> map
+        ParameterizedTypeName mapTypeName = ParameterizedTypeName.get(ClassName.get(Map.class),
+                ClassName.get(String.class),
+                ParameterizedTypeName.get(ClassName.get(Class.class),
+                        WildcardTypeName.subtypeOf(Object.class)));
+        ParameterSpec mapParameterSpec = ParameterSpec.builder(mapTypeName, "map").build();
+
+        MethodSpec.Builder methodHandle = MethodSpec.methodBuilder(Constans.HANDLE)
+                .addAnnotation(Override.class)
+                .addModifiers(Modifier.PUBLIC)
+                .addParameter(mapParameterSpec);
+        for (TypeElement element : elements) {
+            ActivityRouter route = element.getAnnotation(ActivityRouter.class);
+            methodHandle.addStatement("map.put($S, $T.class)", String.format(SCHEMA_FORMATER, route.schema(), route.host(), route.path()), ClassName.get(element));
+        }
+
+        TypeElement interfaceType = processingEnv.getElementUtils().getTypeElement(Constans.ROUTE_SCHEMA_TABLE_FULL_NAME);
+        TypeSpec type = TypeSpec.classBuilder(capitalize(moduleName) + Constans.ROUTE_SCHEMA_TABLE)
                 .addSuperinterface(ClassName.get(interfaceType))
                 .addModifiers(Modifier.PUBLIC)
                 .addMethod(methodHandle.build())

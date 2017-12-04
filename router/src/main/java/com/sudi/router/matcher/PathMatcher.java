@@ -9,9 +9,9 @@ import com.sudi.router.RouteRequest;
 /**
  * Absolutely matcher.
  */
-public class DirectMatcher extends AbsExplicitMatcher {
+public class PathMatcher extends AbsExplicitMatcher {
 
-    public DirectMatcher(int priority) {
+    public PathMatcher(int priority) {
         super(priority);
     }
 

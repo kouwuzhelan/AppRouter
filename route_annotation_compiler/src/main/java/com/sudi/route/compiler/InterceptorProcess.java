@@ -96,7 +96,7 @@ public class InterceptorProcess extends AbstractProcessor {
         for (TypeElement element : elements) {
 //            mLogger.info(String.format("Found interceptor: %s", element.getQualifiedName()));
             Interceptor interceptor = element.getAnnotation(Interceptor.class);
-            String name = interceptor.name();
+            String name = interceptor.value();
             handleInterceptors.addStatement("map.put($S, $T.class)", name, ClassName.get(element));
         }
 

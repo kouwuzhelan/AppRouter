@@ -7,6 +7,6 @@ import java.util.Map;
  * Email：sudi@yiche.com
  */
 
-public interface RouteTable {
+public interface RoutePathTable {
     void handle(Map<String, Class<?>> map);
 }

@@ -13,7 +13,7 @@ import com.sudi.router.RouteRequest;
  * Created by sudi on 2017/12/1.
  * Email：sudi@yiche.com
  */
-@Interceptor(name = InterceptorName.BIND_PHONE_INTERCEPTOR)
+@Interceptor(InterceptorName.BIND_PHONE_INTERCEPTOR)
 public class BindPhoneInterceptor implements RouteInterceptor {
     @Override
     public boolean intercept(Context context, RouteRequest routeRequest) {

@@ -1,9 +1,7 @@
 package com.sudi.router;
 
 import com.sudi.router.matcher.AbsMatcher;
-import com.sudi.router.matcher.BrowserMatcher;
-import com.sudi.router.matcher.DirectMatcher;
-import com.sudi.router.matcher.ImplicitMatcher;
+import com.sudi.router.matcher.PathMatcher;
 import com.sudi.router.matcher.SchemeMatcher;
 
 import java.util.ArrayList;
@@ -19,10 +17,10 @@ public class MatcherRegistry {
     private static final List<AbsMatcher> registry = new ArrayList<>();
 
     static {
-        registry.add(new DirectMatcher(0x1000));
+        registry.add(new PathMatcher(0x1000));
         registry.add(new SchemeMatcher(0x0100));
-        registry.add(new ImplicitMatcher(0x0010));
-        registry.add(new BrowserMatcher(0x0000));
+//        registry.add(new ImplicitMatcher(0x0010));
+//        registry.add(new BrowserMatcher(0x0000));
         Collections.sort(registry);
     }
 

@@ -13,7 +13,7 @@ import com.sudi.router.RouteRequest;
  * Created by sudi on 2017/12/1.
  * Email：sudi@yiche.com
  */
-@Interceptor(name = InterceptorName.LOGIN_INTERCEPTOR)
+@Interceptor(InterceptorName.LOGIN_INTERCEPTOR)
 public class LoginIntercepor implements RouteInterceptor {
 
     @Override

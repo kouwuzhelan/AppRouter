@@ -1,5 +1,6 @@
 package com.sudi.approuter;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.widget.TextView;
 
 import com.sudi.approuter.utils.ActivityPaths;
 import com.sudi.approuter.utils.Param;
+import com.sudi.approuter.utils.TestActivitySchemas;
 import com.sudi.router.IRouter;
 import com.sudi.router.Router;
 
@@ -77,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                         with(Param.sex, "male");
                 break;
             case R.id.goB:
-                build = Router.build(ActivityPaths.B_ACTIVITY);
+                build = Router.build(Uri.parse(TestActivitySchemas.withParam(TestActivitySchemas.B_ACTIVITY_SCHEMA)));
                 break;
             case R.id.goC:
                 build = Router.build(ActivityPaths.C_ACTIVITY);

@@ -17,7 +17,9 @@ import java.lang.annotation.Target;
 public @interface ActivityRouter {
     String path();
 
-    String schema() default "bitauto";
+    String schema() default "bitauto.yicheapp";
+
+    String host() default "yiche.app";
 
     String[] interceptors() default {};
 }
