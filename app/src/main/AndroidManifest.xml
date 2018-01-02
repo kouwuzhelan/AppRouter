@@ -16,10 +16,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.TestAActivity" />
-        <activity android:name=".activity.TestBActivity" />
         <activity android:name=".activity.TestCActivity" />
-        <activity android:name=".activity.TestDActivity" />
+        <activity android:name=".activity.TestDActivity" android:exported="true" />
     </application>
 
 </manifest>

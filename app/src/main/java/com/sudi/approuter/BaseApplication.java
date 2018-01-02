@@ -24,7 +24,7 @@ public class BaseApplication extends Application {
     private void initRoute() {
         Router.initialize(new Configuration.Builder()
                 .setDebuggable(BuildConfig.DEBUG)
-                .registerModules("app")
+                .registerModules("app","module1", "module2")
                 .build());
     }
 }

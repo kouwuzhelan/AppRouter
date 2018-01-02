@@ -106,8 +106,9 @@ public class RoutePorcess extends AbstractProcessor {
                 .addModifiers(Modifier.PUBLIC)
                 .addParameter(mapParameterSpec);
         for (TypeElement element : elements) {
-            ActivityRouter route = element.getAnnotation(ActivityRouter.class);
-            methodHandle.addStatement("map.put($S, $T.class)", route.path(), ClassName.get(element));
+//            ActivityRouter route = element.getAnnotation(ActivityRouter.class);
+            ClassName className = ClassName.get(element);
+            methodHandle.addStatement("map.put($S, $T.class)", className, className);
         }
         TypeElement interfaceType = processingEnv.getElementUtils().getTypeElement(Constans.ROUTE_PATH_TABLE_FULL_NAME);
         TypeSpec type = TypeSpec.classBuilder(capitalize(moduleName) + Constans.ROUTE_PATH_TABLE)

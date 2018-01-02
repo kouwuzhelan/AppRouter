@@ -1,4 +1,4 @@
-package com.sudi.approuter.utils;
+package com.sudi.commonlibrary;
 
 /**
  * Created by sudi on 2017/12/4.

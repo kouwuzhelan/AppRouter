@@ -1,12 +1,11 @@
-package com.sudi.approuter.activity;
+package com.sudi.module2;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.sudi.approuter.R;
-import com.sudi.approuter.utils.ActivityPaths;
-import com.sudi.approuter.utils.InterceptorName;
+import com.sudi.commonlibrary.ActivityPaths;
+import com.sudi.commonlibrary.InterceptorName;
 import com.sudi.route.annotation.ActivityRouter;
 
 /**

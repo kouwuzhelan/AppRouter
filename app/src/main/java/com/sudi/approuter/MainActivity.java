@@ -6,9 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
-import com.sudi.approuter.utils.ActivityPaths;
-import com.sudi.approuter.utils.Param;
-import com.sudi.approuter.utils.TestActivitySchemas;
+import com.sudi.commonlibrary.ActivityPaths;
+import com.sudi.commonlibrary.Param;
+import com.sudi.commonlibrary.TestActivitySchemas;
 import com.sudi.router.IRouter;
 import com.sudi.router.Router;
 
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         IRouter build = null;
         switch (v.getId()) {
             case R.id.goA:
-                build = Router.build(ActivityPaths.A_ACTIVITY);
+                build = Router.build(ActivityPaths.test.CLASS_NAME_A_ACTIVITY);
                 build.with(Param.age, 28).
                         with(Param.name, "sudi").
                         with(Param.sex, "male");
@@ -82,10 +82,10 @@ public class MainActivity extends AppCompatActivity {
                 build = Router.build(Uri.parse(TestActivitySchemas.withParam(TestActivitySchemas.B_ACTIVITY_SCHEMA)));
                 break;
             case R.id.goC:
-                build = Router.build(ActivityPaths.C_ACTIVITY);
+                build = Router.build(ActivityPaths.test.CLASS_NAME_C_ACTIVITY);
                 break;
             case R.id.goD:
-                build = Router.build(ActivityPaths.D_ACTIVITY);
+                build = Router.build(ActivityPaths.test.CLASS_NAME_D_ACTIVITY);
                 break;
         }
         if (build != null) {

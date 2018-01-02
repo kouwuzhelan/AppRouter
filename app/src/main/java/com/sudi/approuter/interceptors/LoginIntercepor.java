@@ -4,7 +4,7 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.sudi.approuter.BaseApplication;
-import com.sudi.approuter.utils.InterceptorName;
+import com.sudi.commonlibrary.InterceptorName;
 import com.sudi.route.annotation.Interceptor;
 import com.sudi.router.RouteInterceptor;
 import com.sudi.router.RouteRequest;
