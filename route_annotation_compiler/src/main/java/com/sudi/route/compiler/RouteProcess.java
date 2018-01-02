@@ -36,7 +36,7 @@ import javax.lang.model.element.TypeElement;
 @AutoService(Processor.class)
 @SupportedAnnotationTypes({"com.sudi.route.annotation.ActivityRouter"})
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
-public class RoutePorcess extends AbstractProcessor {
+public class RouteProcess extends AbstractProcessor {
     private String mModuleName;
 
     private final static String SCHEMA_FORMATER = "%s://%s/%s";
