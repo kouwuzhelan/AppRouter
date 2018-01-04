@@ -35,9 +35,7 @@ dependencies {
     compile project(':module1')
     compile project(':module2')
 
-    compile project(':router')
-    annotationProcessor project(':route_annotation_compiler')
+    annotationProcessor project(ROUTE_ANNOTATION_COMPILER)
 
-    compile 'com.jakewharton:butterknife:8.5.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    annotationProcessor BUTTER_KNIFE_COMPILER
 }

@@ -32,9 +32,10 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.3.1'
     testCompile 'junit:junit:4.12'
-    compile project(':router')
-    annotationProcessor project(':route_annotation_compiler')
-    compile 'com.jakewharton:butterknife:8.5.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+
+
+    annotationProcessor project(ROUTE_ANNOTATION_COMPILER)
+
+    annotationProcessor BUTTER_KNIFE_COMPILER
     compile project(':commonlibrary')
 }
