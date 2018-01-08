@@ -12,9 +12,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 
+import com.sudi.route.annotation.model.RouteInfo;
 import com.sudi.router.matcher.AbsImplicitMatcher;
 import com.sudi.router.matcher.AbsMatcher;
-import com.sudi.router.matcher.PathMatcher;
+import com.sudi.router.matcher.RouteInfoMatcher;
 import com.sudi.router.matcher.SchemeMatcher;
 import com.sudi.router.util.RLog;
 
@@ -46,17 +47,6 @@ public class _Router extends AbsRouter {
         }
         return sInstance;
     }
-
-//    /**
-//     * Handle route table.
-//     *
-//     * @param routeTable route table
-//     */
-//    void handleRouteTable(RoutePathTable routeTable) {
-//        if (routeTable != null) {
-//            routeTable.handle(AptHub.routePathTable);
-//        }
-//    }
 
     /**
      * Handle interceptor table.
@@ -124,6 +114,7 @@ public class _Router extends AbsRouter {
     @Override
     public Object getFragment(Context context) {
 
+        mRouteRequest.setRouteToActivity(false);
         //FIXME
         if (mRouteRequest.getUri() == null) {
             callback(RouteResult.FAILED, "uri == null.");
@@ -146,24 +137,24 @@ public class _Router extends AbsRouter {
         }
 
         // fragment only matches explicit route
-        if (AptHub.routePathTable.isEmpty()) {
+        if (AptHub.routeInfoTable.isEmpty()) {
             callback(RouteResult.FAILED, "The route table contains no mapping.");
             return null;
         }
 
-        Set<Map.Entry<String, Class<?>>> entries = AptHub.routePathTable.entrySet();
+        Set<Map.Entry<String, RouteInfo>> entries = AptHub.routeInfoTable.entrySet();
 
         for (AbsMatcher matcher : matcherList) {
             if (matcher instanceof AbsImplicitMatcher) { // Ignore implicit matcher.
                 continue;
             }
-            for (Map.Entry<String, Class<?>> entry : entries) {
-                if (matcher.match(context, mRouteRequest.getUri(), entry.getKey(), mRouteRequest)) {
+            for (Map.Entry<String, RouteInfo> entry : entries) {
+                if (matcher.match(context, mRouteRequest.getUri(), entry.getValue(), mRouteRequest)) {
                     RLog.i("Caught by " + matcher.getClass().getCanonicalName());
-                    if (intercept(context, entry.getValue())) {
+                    if (intercept(context, entry.getValue().mTarget)) {
                         return null;
                     }
-                    Object result = matcher.generate(context, mRouteRequest.getUri(), entry.getValue());
+                    Object result = matcher.generate(context, mRouteRequest.getUri(), entry.getValue().mTarget);
                     if (result instanceof Fragment) {
                         Fragment fragment = (Fragment) result;
                         Bundle bundle = mRouteRequest.getExtras();
@@ -215,22 +206,14 @@ public class _Router extends AbsRouter {
             return null;
         }
 
-        Set<Map.Entry<String, Class<?>>> pathEntries = AptHub.routePathTable.entrySet();
-        Set<Map.Entry<String, Class<?>>> schemaEntries = AptHub.routeSchemaTable.entrySet();
+        Set<Map.Entry<String, RouteInfo>> schemaEntries = AptHub.routeInfoTable.entrySet();
 
         for (AbsMatcher matcher : matcherList) {
-            if (matcher instanceof PathMatcher && !AptHub.routePathTable.isEmpty()) {
-                for (Map.Entry<String, Class<?>> entry : pathEntries) {
-                    if (matcher.match(context, mRouteRequest.getUri(), entry.getKey(), mRouteRequest)) {
+            if (matcher instanceof RouteInfoMatcher && !AptHub.routeInfoTable.isEmpty()) {
+                for (Map.Entry<String, RouteInfo> entry : schemaEntries) {
+                    if (matcher.match(context, mRouteRequest.getUri(), entry.getValue(), mRouteRequest)) {
                         RLog.i("Caught by " + matcher.getClass().getCanonicalName());
-                        return finalizeIntent(context, matcher, entry.getValue());
-                    }
-                }
-            } else if (matcher instanceof SchemeMatcher && !AptHub.routeSchemaTable.isEmpty()) {
-                for (Map.Entry<String, Class<?>> entry : schemaEntries) {
-                    if (matcher.match(context, mRouteRequest.getUri(), entry.getKey(), mRouteRequest)) {
-                        RLog.i("Caught by " + matcher.getClass().getCanonicalName());
-                        return finalizeIntent(context, matcher, entry.getValue());
+                        return finalizeIntent(context, matcher, entry.getValue().mTarget);
                     }
                 }
             } else {

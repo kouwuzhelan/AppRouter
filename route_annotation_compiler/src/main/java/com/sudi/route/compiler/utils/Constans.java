@@ -12,9 +12,9 @@ public class Constans {
     public static final String DOT = ".";
     public static final String PACKAGE_NAME = "com.sudi.router";
     public static final String ROUTE_PATH_TABLE = "RoutePathTable";
-    public static final String ROUTE_SCHEMA_TABLE = "RouteSchemaTable";
+    public static final String ROUTE_INFO_TABLE = "RouteInfoTable";
     public static final String ROUTE_PATH_TABLE_FULL_NAME = PACKAGE_NAME + DOT + ROUTE_PATH_TABLE;
-    public static final String ROUTE_SCHEMA_TABLE_FULL_NAME = PACKAGE_NAME + DOT + ROUTE_SCHEMA_TABLE;
+    public static final String ROUTE_INFO_TABLE_FULL_NAME = PACKAGE_NAME + DOT + ROUTE_INFO_TABLE;
     public static final String ACTIVITY_FULL_NAME = "android.app.Activity";
     public static final String FRAGMENT_FULL_NAME = "android.app.Fragment";
     public static final String FRAGMENT_V4_FULL_NAME = "android.support.v4.app.Fragment";

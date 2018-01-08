@@ -1,5 +1,6 @@
 package com.sudi.router;
 
+import com.sudi.route.annotation.model.RouteInfo;
 import com.sudi.router.util.RLog;
 
 import java.lang.reflect.Constructor;
@@ -14,14 +15,14 @@ import java.util.Map;
 public class AptHub {
     private static final String PACKAGE_NAME = "com.sudi.router";
     private static final String DOT = ".";
-    private static final String ROUTE_PATH_TABLE = "RoutePathTable";
-    private static final String ROUTE_SCHEMA_TABLE = "RouteSchemaTable";
+    //    private static final String ROUTE_PATH_TABLE = "RoutePathTable";
+    private static final String ROUTE_INFO_TABLE = "RouteInfoTable";
     private static final String INTERCEPTOR_TABLE = "InterceptorTable";
     private static final String TARGET_INTERCEPTORS = "TargetInterceptors";
 
     // Uri -> Activity/Fragment
-    static Map<String, Class<?>> routePathTable = new HashMap<>();
-    static Map<String, Class<?>> routeSchemaTable = new HashMap<>();
+//    static Map<String, Class<?>> routePathTable = new HashMap<>();
+    static Map<String, RouteInfo> routeInfoTable = new HashMap<>();
     // Activity/Fragment -> interceptorTable' name
     static Map<Class<?>, String[]> targetInterceptors = new HashMap<>();
     // interceptor's name -> interceptor
@@ -41,39 +42,39 @@ public class AptHub {
             // validate module name first.
             validateModuleName(modules);
 
-            /* RoutePathTable */
-            String pathTableName;
-            for (String module : modules) {
-                try {
-                    pathTableName = PACKAGE_NAME + DOT + capitalize(module) + ROUTE_PATH_TABLE;
-                    Class<?> routeTableClz = Class.forName(pathTableName);
-                    Constructor constructor = routeTableClz.getConstructor();
-                    RoutePathTable instance = (RoutePathTable) constructor.newInstance();
-                    instance.handle(routePathTable);
-                } catch (ClassNotFoundException e) {
-                    RLog.i(String.format("There is no RoutePathTable in module: %s.", module));
-                } catch (Exception e) {
-                    RLog.w(e.getMessage());
-                }
-            }
-            RLog.i("RoutePathTable", routePathTable.toString());
+//            /* RoutePathTable */
+//            String pathTableName;
+//            for (String module : modules) {
+//                try {
+//                    pathTableName = PACKAGE_NAME + DOT + capitalize(module) + ROUTE_PATH_TABLE;
+//                    Class<?> routeTableClz = Class.forName(pathTableName);
+//                    Constructor constructor = routeTableClz.getConstructor();
+//                    RoutePathTable instance = (RoutePathTable) constructor.newInstance();
+//                    instance.handle(routePathTable);
+//                } catch (ClassNotFoundException e) {
+//                    RLog.i(String.format("There is no RoutePathTable in module: %s.", module));
+//                } catch (Exception e) {
+//                    RLog.w(e.getMessage());
+//                }
+//            }
+//            RLog.i("RoutePathTable", routePathTable.toString());
 
-            /* RoutePathTable */
-            String schemaTableName;
+            /* RouteInfoTable */
+            String infoTableName;
             for (String module : modules) {
                 try {
-                    schemaTableName = PACKAGE_NAME + DOT + capitalize(module) + ROUTE_SCHEMA_TABLE;
-                    Class<?> routeTableClz = Class.forName(schemaTableName);
+                    infoTableName = PACKAGE_NAME + DOT + capitalize(module) + ROUTE_INFO_TABLE;
+                    Class<?> routeTableClz = Class.forName(infoTableName);
                     Constructor constructor = routeTableClz.getConstructor();
-                    RouteSchemaTable instance = (RouteSchemaTable) constructor.newInstance();
-                    instance.handle(routeSchemaTable);
+                    RouteInfoTable instance = (RouteInfoTable) constructor.newInstance();
+                    instance.handle(routeInfoTable);
                 } catch (ClassNotFoundException e) {
-                    RLog.i(String.format("There is no RouteSchemaTable in module: %s.", module));
+                    RLog.i(String.format("There is no RouteInfoTable in module: %s.", module));
                 } catch (Exception e) {
                     RLog.w(e.getMessage());
                 }
             }
-            RLog.i("RoutePathTable", routeSchemaTable.toString());
+            RLog.i("RoutePathTable", routeInfoTable.toString());
 
             /* TargetInterceptors */
             String targetInterceptorsName;

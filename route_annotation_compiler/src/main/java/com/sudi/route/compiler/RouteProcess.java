@@ -10,6 +10,7 @@ import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import com.squareup.javapoet.WildcardTypeName;
 import com.sudi.route.annotation.ActivityRouter;
+import com.sudi.route.annotation.model.RouteInfo;
 import com.sudi.route.compiler.utils.Constans;
 
 import java.io.IOException;
@@ -27,6 +28,8 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.Types;
 
 /**
  * Created by sudi on 2017/11/17.
@@ -56,14 +59,18 @@ public class RouteProcess extends AbstractProcessor {
         // 合法的TypeElement集合
         Set<TypeElement> typeElements = new HashSet<>();
         for (Element element : elements) {
-            if (validateElement(element)) {
+            if (validateElement(element, Constans.FRAGMENT_V4_FULL_NAME) ||
+                    validateElement(element, Constans.FRAGMENT_FULL_NAME) ||
+                    validateElement(element, Constans.ACTIVITY_FULL_NAME)) {
                 typeElements.add((TypeElement) element);
             }
         }
+
+
         if (mModuleName != null) {
             String validModuleName = mModuleName.replace(".", "_").replace("-", "_");
-            generateRoutePathTable(validModuleName, typeElements);
-            generateRouteSchemaTable(validModuleName, typeElements);
+//            generateRoutePathTable(validModuleName, typeElements);
+            generateRouteInfoTable(validModuleName, typeElements);
             generateTargetInterceptors(validModuleName, typeElements);
         } else {
             throw new RuntimeException(String.format("No option `%s` passed to Route annotation processor.", Constans.OPTION_MODULE_NAME));
@@ -71,11 +78,8 @@ public class RouteProcess extends AbstractProcessor {
         return true;
     }
 
-    /**
-     * Verify the annotated class. Must be a subtype of Activity.
-     */
-    private boolean validateElement(Element typeElement) {
-        if (!isSubtype(typeElement, Constans.ACTIVITY_FULL_NAME)) {
+    private boolean validateElement(Element typeElement, String type) {
+        if (!isSubtype(typeElement, type)) {
             return false;
         }
         Set<Modifier> modifiers = typeElement.getModifiers();
@@ -125,14 +129,14 @@ public class RouteProcess extends AbstractProcessor {
     }
 
     /**
-     * RouteSchemaTable.
+     * RouteInfoTable.
      */
-    private void generateRouteSchemaTable(String moduleName, Set<TypeElement> elements) {
-        // Map<String, Class<?>> map
-        ParameterizedTypeName mapTypeName = ParameterizedTypeName.get(ClassName.get(Map.class),
+    private void generateRouteInfoTable(String moduleName, Set<TypeElement> elements) {
+        // Map<String, RouteInfo> map
+        ParameterizedTypeName mapTypeName = ParameterizedTypeName.get(
+                ClassName.get(Map.class),
                 ClassName.get(String.class),
-                ParameterizedTypeName.get(ClassName.get(Class.class),
-                        WildcardTypeName.subtypeOf(Object.class)));
+                ClassName.get(RouteInfo.class));
         ParameterSpec mapParameterSpec = ParameterSpec.builder(mapTypeName, "map").build();
 
         MethodSpec.Builder methodHandle = MethodSpec.methodBuilder(Constans.HANDLE)
@@ -141,11 +145,18 @@ public class RouteProcess extends AbstractProcessor {
                 .addParameter(mapParameterSpec);
         for (TypeElement element : elements) {
             ActivityRouter route = element.getAnnotation(ActivityRouter.class);
-            methodHandle.addStatement("map.put($S, $T.class)", String.format(SCHEMA_FORMATER, route.schema(), route.host(), route.path()), ClassName.get(element));
+            // public RouteInfo build(Class cls,String classPath, String schema, String alias)
+            methodHandle.addStatement("map.put($S, $T.build($T.class,$S,$S,$S))",
+                    route.path(),
+                    ClassName.get(RouteInfo.class),
+                    ClassName.get(element),
+                    ClassName.get(element),
+                    String.format(SCHEMA_FORMATER, route.schema(), route.host(), route.path()),
+                    route.path());
         }
 
-        TypeElement interfaceType = processingEnv.getElementUtils().getTypeElement(Constans.ROUTE_SCHEMA_TABLE_FULL_NAME);
-        TypeSpec type = TypeSpec.classBuilder(capitalize(moduleName) + Constans.ROUTE_SCHEMA_TABLE)
+        TypeElement interfaceType = processingEnv.getElementUtils().getTypeElement(Constans.ROUTE_INFO_TABLE_FULL_NAME);
+        TypeSpec type = TypeSpec.classBuilder(capitalize(moduleName) + Constans.ROUTE_INFO_TABLE)
                 .addSuperinterface(ClassName.get(interfaceType))
                 .addModifiers(Modifier.PUBLIC)
                 .addMethod(methodHandle.build())

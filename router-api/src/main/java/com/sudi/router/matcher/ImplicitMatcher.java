@@ -7,6 +7,7 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 
+import com.sudi.route.annotation.model.RouteInfo;
 import com.sudi.router.RouteRequest;
 
 
@@ -22,7 +23,7 @@ public class ImplicitMatcher extends AbsImplicitMatcher {
     }
 
     @Override
-    public boolean match(Context context, Uri uri, @Nullable String route, RouteRequest routeRequest) {
+    public boolean match(Context context, Uri uri, @Nullable RouteInfo route, RouteRequest routeRequest) {
         if (uri.toString().toLowerCase().startsWith("http://")
                 || uri.toString().toLowerCase().startsWith("https://")) {
             return false;

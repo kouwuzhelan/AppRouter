@@ -33,12 +33,16 @@ public class RouteRequest implements Serializable {
     private int requestCode = INVALID_REQUEST_CODE;
     private int enterAnim;
     private int exitAnim;
+
+    private boolean routeToActivity;
+
     @Nullable
     private ActivityOptionsCompat activityOptionsCompat;
 
 
     public RouteRequest(Uri uri) {
         this.uri = uri;
+        this.routeToActivity = true;
     }
 
     public Uri getUri() {
@@ -175,5 +179,13 @@ public class RouteRequest implements Serializable {
 
     public void setActivityOptionsCompat(@Nullable ActivityOptionsCompat activityOptionsCompat) {
         this.activityOptionsCompat = activityOptionsCompat;
+    }
+
+    public boolean isRouteToActivity() {
+        return routeToActivity;
+    }
+
+    public void setRouteToActivity(boolean routeToActivity) {
+        this.routeToActivity = routeToActivity;
     }
 }

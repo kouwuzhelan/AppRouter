@@ -6,37 +6,60 @@ import android.support.annotation.Nullable;
 
 import com.sudi.route.annotation.model.RouteInfo;
 import com.sudi.router.RouteRequest;
+import com.sudi.router.util.RLog;
 
 /**
- * Standard scheme matcher. It matches scheme, authority(host, port) and path(if offered),
- * then transfers the query part(if offered) to bundle/arguments.
- * <p>
- * If you configured a route like this:
- * <code>
- * <p>
- * -> @Route("http://example.com/user")
- * <p>
- * </code>
- * Then <a href="">http://example.com/user</a> will match this route,
- * <a href="">http://example.com/user?id=9527&status=0</a> also does and puts bundles for you:
- * <code>
- * <p>
- * bundle.putString("id", "9527");
- * <br>
- * bundle.putString("status", "0");
- * <br>
- * intent.putExtras(bundle);  or fragment.setArguments(bundle);
- * <p>
- * </code>
- * <p>
+ * Created by sudi on 2018/1/5.
+ * Email：sudi@yiche.com
  */
-public class SchemeMatcher extends AbsExplicitMatcher {
-    public SchemeMatcher(int priority) {
+
+public class RouteInfoMatcher extends AbsExplicitMatcher {
+    public RouteInfoMatcher(int priority) {
         super(priority);
     }
 
     @Override
     public boolean match(Context context, Uri uri, @Nullable RouteInfo route, RouteRequest routeRequest) {
+        RLog.e("RouteInfoMatcher match() \nuri[" + uri + "] ,\nRouteInfo ----" + route.toString());
+        boolean match = false;
+        if (routeRequest.isRouteToActivity()) {
+            //activity 先判断路径，后判断schema
+            match = matchPath(uri, route);
+            if (!match) {
+                match = matchSchema(uri, route, routeRequest);
+            }
+        } else {
+            //fragment直接用别名判断
+            match = matchAlias(uri, route);
+        }
+
+        return match;
+    }
+
+    private boolean matchAlias(Uri uri, RouteInfo route) {
+        return !isEmpty(route.mAlias) && uri.toString().equals(route.mAlias);
+    }
+
+
+    /**
+     * 匹配路径
+     *
+     * @param uri
+     * @param route
+     * @return
+     */
+    private boolean matchPath(Uri uri, RouteInfo route) {
+        return !isEmpty(route.mClassPath) && uri.toString().equals(route.mClassPath);
+    }
+
+    /**
+     * 匹配schema
+     *
+     * @param uri
+     * @param route
+     * @return
+     */
+    private boolean matchSchema(Uri uri, RouteInfo route, RouteRequest routeRequest) {
         if (isEmpty(route.mSchema)) {
             return false;
         }
@@ -56,7 +79,6 @@ public class SchemeMatcher extends AbsExplicitMatcher {
                 if (!cutSlash(uri.getPath()).equals(cutSlash(routeUri.getPath()))) {
                     return false;
                 }
-
                 // bundle parser
                 if (uri.getQuery() != null) {
                     parseParams(uri, routeRequest);
@@ -82,5 +104,4 @@ public class SchemeMatcher extends AbsExplicitMatcher {
         }
         return path;
     }
-
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 
+import com.sudi.route.annotation.model.RouteInfo;
 import com.sudi.router.RouteRequest;
 
 /**
@@ -20,10 +21,10 @@ interface Matcher extends Comparable<Matcher> {
      * @param routeRequest {@link RouteRequest}.
      * @return True if matched, false otherwise.
      */
-    boolean match(Context context, Uri uri, @Nullable String route, RouteRequest routeRequest);
+    boolean match(Context context, Uri uri, @Nullable RouteInfo route, RouteRequest routeRequest);
 
     /**
-     * Called when {@link #match(Context, Uri, String, RouteRequest)} returns true.
+     * Called when {@link #match(Context, Uri, RouteInfo, RouteRequest)} returns true.
      *
      * @param context Context.
      * @param uri     The given uri.

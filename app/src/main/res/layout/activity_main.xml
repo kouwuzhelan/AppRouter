@@ -48,7 +48,7 @@
         android:layout_alignLeft="@+id/goA"
         android:layout_below="@+id/goC"
         android:layout_marginTop="30dp"
-        android:text="goD"
+        android:text="设置fragment"
         android:textSize="30sp" />
 
     <TextView

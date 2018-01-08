@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 
+import com.sudi.route.annotation.model.RouteInfo;
 import com.sudi.router.RouteRequest;
 
 /**
@@ -16,8 +17,8 @@ public class PathMatcher extends AbsExplicitMatcher {
     }
 
     @Override
-    public boolean match(Context context, Uri uri, @Nullable String route, RouteRequest routeRequest) {
-        return !isEmpty(route) && uri.toString().equals(route);
+    public boolean match(Context context, Uri uri, @Nullable RouteInfo route, RouteRequest routeRequest) {
+        return !isEmpty(route.mClassPath) && uri.toString().equals(route.mClassPath);
     }
 
 }

@@ -86,6 +86,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.goD:
                 build = Router.build(ActivityPaths.test.CLASS_NAME_D_ACTIVITY);
+                build.with(Param.age, 28).
+                        with(Param.name, "sudi").
+                        with(Param.sex, "male");
                 break;
         }
         if (build != null) {
